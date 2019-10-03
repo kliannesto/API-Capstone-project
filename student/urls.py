@@ -5,8 +5,10 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register('students',views.StudentViewSet)
+router.register('courses',views.StudentViewSet)
 
 
 urlpatterns = [
     path('api/',include(router.urls)),
+    path('api/studentList',views.StudentList.as_view()),
 ]
