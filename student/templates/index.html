@@ -1,0 +1,54 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
+<div id="main">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Student ID</th>
+            <th scope="col">Fullname</th>
+            <th scope="col">Course</th>
+            <th scope="col">address</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for = "(s,index) in students" :key ="index">
+            <th scope="row">[[s.student_id]]</th>
+            <td>[[s.fullname]]</td>
+            <td>[[s.course]]</td>
+            <td>@mdo</td>
+          </tr>
+        </tbody>
+      </table>
+
+</div>
+{%endblock%}
+
+{%block script%}
+<script>
+new Vue({
+        delimiters:['[[',']]'],
+        el:'#main',
+        data(){
+            return{
+                students:[]
+
+
+            }
+        },
+        methods:{
+
+        },
+        created(){
+            axios.get('/api/students').then(res=>{
+
+                this.students = res.data
+            })
+
+        }
+
+})
+
+</script>
+{%endblock%}

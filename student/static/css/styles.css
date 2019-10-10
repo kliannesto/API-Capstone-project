@@ -1,0 +1,19 @@
+.background
+{
+	background-image:url("../img/blog.png");
+	background-color: #ff8080
+}
+#description
+{
+	padding-top: 20px;
+	
+}
+#savebtn
+{
+	padding-left: 50px;
+	padding-right: 50px;
+}
+#post
+{
+	align-self: center;
+}
