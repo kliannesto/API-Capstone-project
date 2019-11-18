@@ -31,10 +31,27 @@ class EventDateSerializer(serializers.ModelSerializer):
         model = EventDate
         fields = '__all__'
 
+class EventDateWithObjectSerializer(serializers.ModelSerializer):   
+    event = EventNameSerializer()
+    class Meta:
+        model = EventDate
+        fields = '__all__'
+
 class AttendanceSerializer(serializers.ModelSerializer):   
     class Meta:
         model = Attendance
         fields = '__all__'
+    def create(self, validated_data):
+        event = validated_data.get('event')
+        student = validated_data.get('student')
+        logType = validated_data.get('logType')
+        attendances = Attendance.objects.filter(student= student, event=event, logType=logType)
+        if len(attendances) > 0:
+            return attendances[0]
+        attendance = Attendance.objects.create(**validated_data)
+        return attendance
+
+        
 
 class ReadStudentSerializer(serializers.ModelSerializer):
     course=CourseSerializer()

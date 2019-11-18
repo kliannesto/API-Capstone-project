@@ -9,12 +9,17 @@ router.register('courses',views.CourseViewSet)
 router.register('eventnames',views.EventNameViewSet)
 router.register('sy',views.SYViewSet)
 router.register('semesters',views.SemesterViewSet)
-router.register('eventcounts',views.EventDateViewSet)
+router.register('events',views.EventDateViewSet)
+router.register('eventLists',views.EventDateWithObjectViewSet)
 router.register('attendance',views.AttendanceViewSet)
 router.register('readstudents',views.ReadStudentViewSet)
+
 
 urlpatterns = [
     path('api/',include(router.urls)),
     path('api/students/course/<course_id>',views.StudentByCourse.as_view()),
-    path('',views.index)
+    path('api/eventsnow/',views.EventDateNow.as_view()),
+    path('',views.index),
+    path('api/students/studentbyId/<int:st_id>',views.get_studID),
+    path('api/dateattendance/sem/<sem_id>/ay/<ay_id>',views.DateAttendanceBySemAndAY.as_view())
 ]

@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from rest_framework import viewsets,generics
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from datetime import datetime;
 from .models import Student,Course,EventName,SY,Semester,EventDate,Attendance
-from .serializers import StudentSerializer,CourseSerializer,EventNameSerializer,SYSerializer,EventDateSerializer,SemesterSerializer,AttendanceSerializer,ReadStudentSerializer
+from .serializers import StudentSerializer,CourseSerializer,EventNameSerializer,SYSerializer,EventDateWithObjectSerializer,EventDateSerializer,SemesterSerializer,AttendanceSerializer,ReadStudentSerializer
 # Create your views here.
 
 class StudentViewSet(viewsets.ModelViewSet):
@@ -17,6 +20,17 @@ class CourseViewSet(viewsets.ModelViewSet):
 #     serializer_class = StudentSerializer
 #     def get_queryset(self):
 #         return Student.objects.all()
+
+class DateAttendanceBySemAndAY(generics.ListAPIView):
+    serializer_class = EventDateWithObjectSerializer
+    def get_queryset(self):
+        print('hasdhhjds')
+        ay_id = self.kwargs['ay_id']
+        sem_id = self.kwargs['sem_id']
+        print(ay_id)
+        print(sem_id)
+        ay = SY.objects.get(id = ay_id)
+        return EventDate.objects.filter( sy = ay, semester=sem_id)
 
 class StudentByCourse(generics.ListAPIView):
     serializer_class = ReadStudentSerializer
@@ -41,6 +55,15 @@ class EventDateViewSet(viewsets.ModelViewSet):
     queryset = EventDate.objects.all()
     serializer_class = EventDateSerializer
 
+class EventDateWithObjectViewSet(viewsets.ModelViewSet):
+    queryset = EventDate.objects.all()
+    serializer_class = EventDateWithObjectSerializer
+
+class EventDateNow(generics.ListAPIView):
+    serializer_class = EventDateSerializer
+    def get_queryset(self):
+        return EventDate.objects.filter( eventdate = datetime.now())
+
 class AttendanceViewSet(viewsets.ModelViewSet):
     queryset = Attendance.objects.all()
     serializer_class = AttendanceSerializer
@@ -51,6 +74,13 @@ class ReadStudentViewSet(viewsets.ModelViewSet):
 
 def index(request):
     return render(request,'index.html')
+
+@api_view(['GET'])
+def get_studID(request, st_id):
+    student = Student.objects.get(student_id = st_id)
+
+    ser = StudentSerializer(student)
+    return Response(ser.data)
 
 
     

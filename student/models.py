@@ -10,13 +10,13 @@ class Course(models.Model):
         return self.code + " "+ '-' +" " + self.description
 
 class Student(models.Model):
-    student_id = models.IntegerField(unique=True)
-    fullname = models.CharField(max_length=100)
-    address = models.CharField(max_length=100)
-    mobileno = models.CharField(max_length=30)
-    guardiancontact = models.CharField(max_length=30)
+    student_id = models.IntegerField(unique=True, null=True, blank=True)
+    fullname = models.CharField(max_length=100, null=True, blank=True)
+    address = models.CharField(max_length=100, null= True, blank=True)
+    mobileno = models.CharField(max_length=30, null=True, blank=True)
+    guardiancontact = models.CharField(max_length=30, null=True, blank=True)
     course = models.ForeignKey(Course,on_delete = models.CASCADE, null = True, blank=True)
-    isActive = models.BooleanField(default=False)
+    isActive = models.BooleanField(default=False, null=True,blank=True)
 
 class EventName(models.Model):
     name = models.CharField(max_length=100)
@@ -39,18 +39,20 @@ class Semester(models.Model):
 
 class EventDate(models.Model):
     event = models.ForeignKey(EventName,on_delete = models.CASCADE, null = True, blank=True)
-    date = models.DateTimeField(auto_now_add=True)
+    sy = models.ForeignKey(SY,on_delete = models.CASCADE, null = True, blank=True)
+    semester = models.IntegerField( null = True, blank=True)
+    eventdate = models.DateField(blank=True, null=True)
 
     def __str__(self):
-        return self.event.name + '-' + str(self.date)
+        return self.event.name + '-' + str(self.eventdate)
 
 
 class Attendance(models.Model):
-    student = models.CharField(max_length=100)
+    student = models.ForeignKey(Student,on_delete = models.CASCADE, null = True, blank=True)
     event = models.ForeignKey(EventDate,on_delete = models.CASCADE, null = True, blank=True)
-    sy = models.ForeignKey(SY,on_delete = models.CASCADE, null = True, blank=True)
-    semester = models.ForeignKey(Semester,on_delete = models.CASCADE, null = True, blank=True)
-    isPresent = models.BooleanField(default=False)
+    logType = models.IntegerField(null=True, blank=True)
+   
+   
     
 
 
