@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from datetime import datetime;
 from .models import Student,Course,EventName,SY,Semester,EventDate,Attendance
-from .serializers import StudentSerializer,CourseSerializer,EventNameSerializer,SYSerializer,EventDateWithObjectSerializer,EventDateSerializer,SemesterSerializer,AttendanceSerializer,ReadStudentSerializer
+from .serializers import StudentSerializer,CourseSerializer,AttendanceWithEventDateSerializer,EventNameSerializer,SYSerializer,EventDateWithObjectSerializer,EventDateSerializer,SemesterSerializer,AttendanceSerializer,ReadStudentSerializer
 # Create your views here.
 
 class StudentViewSet(viewsets.ModelViewSet):
@@ -16,21 +16,33 @@ class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
 
 
-# class StudentList(generics.ListAPIView):
-#     serializer_class = StudentSerializer
-#     def get_queryset(self):
-#         return Student.objects.all()
+class StudentList(generics.ListAPIView):
+    serializer_class = StudentSerializer
+    def get_queryset(self):
+        return Student.objects.all()
 
 class DateAttendanceBySemAndAY(generics.ListAPIView):
     serializer_class = EventDateWithObjectSerializer
     def get_queryset(self):
-        print('hasdhhjds')
         ay_id = self.kwargs['ay_id']
         sem_id = self.kwargs['sem_id']
         print(ay_id)
         print(sem_id)
         ay = SY.objects.get(id = ay_id)
         return EventDate.objects.filter( sy = ay, semester=sem_id)
+
+
+class DateAttendanceByStudentSemAndAY(generics.ListAPIView):
+    serializer_class = AttendanceWithEventDateSerializer
+    def get_queryset(self):
+        ay_id = self.kwargs['ay_id']
+        sem_id = self.kwargs['sem_id']
+        student = Student.objects.get(student_id = self.kwargs['st_id'])
+
+        print(ay_id)
+        print(sem_id)
+        ay = SY.objects.get(id = ay_id)
+        return Attendance.objects.filter(eventDate__sy = ay, eventDate__semester=sem_id, student = student)
 
 class StudentByCourse(generics.ListAPIView):
     serializer_class = ReadStudentSerializer
@@ -81,6 +93,8 @@ def get_studID(request, st_id):
 
     ser = StudentSerializer(student)
     return Response(ser.data)
+
+
 
 
     

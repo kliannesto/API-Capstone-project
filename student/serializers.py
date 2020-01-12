@@ -42,16 +42,21 @@ class AttendanceSerializer(serializers.ModelSerializer):
         model = Attendance
         fields = '__all__'
     def create(self, validated_data):
-        event = validated_data.get('event')
+        eventDate = validated_data.get('event')
         student = validated_data.get('student')
         logType = validated_data.get('logType')
-        attendances = Attendance.objects.filter(student= student, event=event, logType=logType)
+        attendances = Attendance.objects.filter(student= student, eventDate=event)
         if len(attendances) > 0:
             return attendances[0]
         attendance = Attendance.objects.create(**validated_data)
         return attendance
 
-        
+class AttendanceWithEventDateSerializer(serializers.ModelSerializer):
+    eventDate =   EventDateWithObjectSerializer() 
+    class Meta:
+        model = Attendance
+        fields = '__all__'
+
 
 class ReadStudentSerializer(serializers.ModelSerializer):
     course=CourseSerializer()

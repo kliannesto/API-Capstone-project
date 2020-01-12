@@ -10,7 +10,7 @@ class Course(models.Model):
         return self.code + " "+ '-' +" " + self.description
 
 class Student(models.Model):
-    student_id = models.IntegerField(unique=True, null=True, blank=True)
+    student_id = models.CharField(unique=True, null=True, blank=True,max_length=20)
     fullname = models.CharField(max_length=100, null=True, blank=True)
     address = models.CharField(max_length=100, null= True, blank=True)
     mobileno = models.CharField(max_length=30, null=True, blank=True)
@@ -42,6 +42,10 @@ class EventDate(models.Model):
     sy = models.ForeignKey(SY,on_delete = models.CASCADE, null = True, blank=True)
     semester = models.IntegerField( null = True, blank=True)
     eventdate = models.DateField(blank=True, null=True)
+    logType = models.IntegerField(null=True, blank=True)
+
+
+
 
     def __str__(self):
         return self.event.name + '-' + str(self.eventdate)
@@ -49,8 +53,11 @@ class EventDate(models.Model):
 
 class Attendance(models.Model):
     student = models.ForeignKey(Student,on_delete = models.CASCADE, null = True, blank=True)
-    event = models.ForeignKey(EventDate,on_delete = models.CASCADE, null = True, blank=True)
+    eventDate = models.ForeignKey(EventDate,on_delete = models.CASCADE, null = True, blank=True)
     logType = models.IntegerField(null=True, blank=True)
+
+
+
    
    
     
