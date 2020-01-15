@@ -42,7 +42,8 @@ class AttendanceSerializer(serializers.ModelSerializer):
         model = Attendance
         fields = '__all__'
     def create(self, validated_data):
-        eventDate = validated_data.get('event')
+        event = validated_data.get('eventDate')
+        print(event)
         student = validated_data.get('student')
         logType = validated_data.get('logType')
         attendances = Attendance.objects.filter(student= student, eventDate=event)
