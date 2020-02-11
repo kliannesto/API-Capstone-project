@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Student,Course,EventName,SY,Semester,EventDate,Attendance
+from .models import Student,Course,EventName,SY,Semester,EventDate,Attendance, SMSLogs
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,6 +54,7 @@ class AttendanceSerializer(serializers.ModelSerializer):
 
 class AttendanceWithEventDateSerializer(serializers.ModelSerializer):
     eventDate =   EventDateWithObjectSerializer() 
+    student = StudentSerializer()
     class Meta:
         model = Attendance
         fields = '__all__'
@@ -63,4 +64,9 @@ class ReadStudentSerializer(serializers.ModelSerializer):
     course=CourseSerializer()
     class Meta:
         model = Student
+        fields = '__all__'
+
+class SMSLogsSerializer(serializers.ModelSerializer):   
+    class Meta:
+        model = SMSLogs
         fields = '__all__'

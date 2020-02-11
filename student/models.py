@@ -43,10 +43,6 @@ class EventDate(models.Model):
     semester = models.IntegerField( null = True, blank=True)
     eventdate = models.DateField(blank=True, null=True)
     logType = models.IntegerField(null=True, blank=True)
-
-
-
-
     def __str__(self):
         return self.event.name + '-' + str(self.eventdate)
 
@@ -55,6 +51,10 @@ class Attendance(models.Model):
     student = models.ForeignKey(Student,on_delete = models.CASCADE, null = True, blank=True)
     eventDate = models.ForeignKey(EventDate,on_delete = models.CASCADE, null = True, blank=True)
     logType = models.IntegerField(null=True, blank=True)
+
+class SMSLogs(models.Model):
+    log = models.CharField(max_length = 300)
+    recipient = models.CharField(max_length=20, null=True, blank=True)
 
 
 

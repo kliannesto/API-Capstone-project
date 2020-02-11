@@ -3,8 +3,8 @@ from rest_framework import viewsets,generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from datetime import datetime;
-from .models import Student,Course,EventName,SY,Semester,EventDate,Attendance
-from .serializers import StudentSerializer,CourseSerializer,AttendanceWithEventDateSerializer,EventNameSerializer,SYSerializer,EventDateWithObjectSerializer,EventDateSerializer,SemesterSerializer,AttendanceSerializer,ReadStudentSerializer
+from .models import Student,Course,EventName,SY,Semester,EventDate,Attendance,SMSLogs
+from .serializers import StudentSerializer,CourseSerializer,SMSLogsSerializer,AttendanceWithEventDateSerializer,EventNameSerializer,SYSerializer,EventDateWithObjectSerializer,EventDateSerializer,SemesterSerializer,AttendanceSerializer,ReadStudentSerializer
 # Create your views here.
 
 class StudentViewSet(viewsets.ModelViewSet):
@@ -43,6 +43,28 @@ class DateAttendanceByStudentSemAndAY(generics.ListAPIView):
         print(sem_id)
         ay = SY.objects.get(id = ay_id)
         return Attendance.objects.filter(eventDate__sy = ay, eventDate__semester=sem_id, student = student)
+
+
+
+class DateAttendanceByCourseSemAndAY(generics.ListAPIView):
+    serializer_class = AttendanceWithEventDateSerializer
+    def get_queryset(self):
+        ay_id = self.kwargs['ay_id']
+        sem_id = self.kwargs['sem_id']
+        course = Course.objects.get(id = self.kwargs['course_id'])
+
+        print(ay_id)
+        print(sem_id)
+        ay = SY.objects.get(id = ay_id)
+        return Attendance.objects.filter(eventDate__sy = ay, eventDate__semester=sem_id, student__course = course)
+
+
+
+class AttendanceAll(generics.ListAPIView):
+    serializer_class = AttendanceWithEventDateSerializer
+    def get_queryset(self):
+        return Attendance.objects.all()
+
 
 class StudentByCourse(generics.ListAPIView):
     serializer_class = ReadStudentSerializer
@@ -94,6 +116,9 @@ def get_studID(request, st_id):
     ser = StudentSerializer(student)
     return Response(ser.data)
 
+class SMSLogsViewSet(viewsets.ModelViewSet):
+    queryset = SMSLogs.objects.all()
+    serializer_class = SMSLogsSerializer
 
 
 
