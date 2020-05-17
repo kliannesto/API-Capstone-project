@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from datetime import datetime;
 from .models import Student,Course,EventName,SY,Semester,EventDate,Attendance,SMSLogs
-from .serializers import StudentSerializer,CourseSerializer,SMSLogsSerializer,AttendanceWithEventDateSerializer,EventNameSerializer,SYSerializer,EventDateWithObjectSerializer,EventDateSerializer,SemesterSerializer,AttendanceSerializer,ReadStudentSerializer
+from .serializers import StudentSerializer,CourseSerializer,SMSLogsSerializer,AttendanceScheduleSerializer,AttendanceWithEventDateSerializer,EventNameSerializer,SYSerializer,EventDateWithObjectSerializer,EventDateSerializer,SemesterSerializer,AttendanceSerializer,ReadStudentSerializer
 # Create your views here.
 
 class StudentViewSet(viewsets.ModelViewSet):
@@ -87,7 +87,7 @@ class SemesterViewSet(viewsets.ModelViewSet):
 
 class EventDateViewSet(viewsets.ModelViewSet):
     queryset = EventDate.objects.all()
-    serializer_class = EventDateSerializer
+    serializer_class = AttendanceScheduleSerializer
 
 class EventDateWithObjectViewSet(viewsets.ModelViewSet):
     queryset = EventDate.objects.all()

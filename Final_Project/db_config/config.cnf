@@ -1,0 +1,5 @@
+[client]
+database = ssg_dtb
+user = ssg_users
+password = ssg12345
+default-characters-set = utf8

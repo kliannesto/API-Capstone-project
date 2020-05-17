@@ -16,6 +16,7 @@ class Student(models.Model):
     mobileno = models.CharField(max_length=30, null=True, blank=True)
     guardiancontact = models.CharField(max_length=30, null=True, blank=True)
     course = models.ForeignKey(Course,on_delete = models.CASCADE, null = True, blank=True)
+    religion = models.CharField(max_length=30, null=True,blank=True)
     isActive = models.BooleanField(default=False, null=True,blank=True)
 
 class EventName(models.Model):
@@ -48,9 +49,11 @@ class EventDate(models.Model):
 
 
 class Attendance(models.Model):
+
     student = models.ForeignKey(Student,on_delete = models.CASCADE, null = True, blank=True)
-    eventDate = models.ForeignKey(EventDate,on_delete = models.CASCADE, null = True, blank=True)
+    eventDate = models.ForeignKey(EventDate,on_delete = models.CASCADE, null = True, blank=True,related_name="attendances")
     logType = models.IntegerField(null=True, blank=True)
+    isPresent = models.BooleanField(default = False, blank=True, null=True)
 
 class SMSLogs(models.Model):
     log = models.CharField(max_length = 300)

@@ -36,7 +36,6 @@ class EventDateWithObjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventDate
         fields = '__all__'
-
 class AttendanceSerializer(serializers.ModelSerializer):   
     class Meta:
         model = Attendance
@@ -46,11 +45,15 @@ class AttendanceSerializer(serializers.ModelSerializer):
         print(event)
         student = validated_data.get('student')
         logType = validated_data.get('logType')
-        attendances = Attendance.objects.filter(student= student, eventDate=event)
-        if len(attendances) > 0:
-            return attendances[0]
-        attendance = Attendance.objects.create(**validated_data)
-        return attendance
+        try:
+            attendance = Attendance.objects.get(student= student, eventDate=event)
+            attendance.isPresent = True
+            attendance.save()
+            return attendance
+
+        except Attendance.DoesNotExist:
+            attendance = Attendance.objects.create(**validated_data)
+            return attendance
 
 class AttendanceWithEventDateSerializer(serializers.ModelSerializer):
     eventDate =   EventDateWithObjectSerializer() 
@@ -70,3 +73,18 @@ class SMSLogsSerializer(serializers.ModelSerializer):
     class Meta:
         model = SMSLogs
         fields = '__all__'
+
+class AttendanceScheduleSerializer(serializers.ModelSerializer):   
+    attendances = AttendanceSerializer (many=True)
+    class Meta:
+        model = EventDate
+        fields = ['id','event','eventdate','sy','semester','logType','attendances']
+    def create(self, validated_data):
+        attendances = validated_data.pop('attendances')
+        eventdate = EventDate.objects.create(**validated_data)
+        print(eventdate)
+        for attendance in attendances:
+            Attendance.objects.create(eventDate=eventdate,**attendance)
+        return eventdate      
+
+        
