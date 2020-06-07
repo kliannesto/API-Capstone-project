@@ -25,7 +25,7 @@ SECRET_KEY = '&5_9__#$#7nayw3*kgoyoig3sz-x1m16xs_c5wgg6!d8mn!$kl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.43.190","localhost","192.168.254.124"]
+ALLOWED_HOSTS = ["192.168.43.190","localhost","192.168.254.124","192.168.254.105"]
 
 
 # Application definition
@@ -79,9 +79,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'ssg_records',
-            'USER':'root',
-            'PASSWORD': '',
-            'HOST': 'localhost',
+            'USER':'yamamz',
+            'PASSWORD': 'yamamz',
+            'HOST': '192.168.254.107',
             'PORT': 3306,
     }
 }

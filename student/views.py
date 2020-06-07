@@ -5,6 +5,12 @@ from rest_framework.decorators import api_view
 from datetime import datetime;
 from .models import Student,Course,EventName,SY,Semester,EventDate,Attendance,SMSLogs
 from .serializers import StudentSerializer,CourseSerializer,SMSLogsSerializer,AttendanceScheduleSerializer,AttendanceWithEventDateSerializer,EventNameSerializer,SYSerializer,EventDateWithObjectSerializer,EventDateSerializer,SemesterSerializer,AttendanceSerializer,ReadStudentSerializer
+from django.contrib.auth import (
+	authenticate,
+	get_user_model,
+	login,
+	logout,
+)
 # Create your views here.
 
 class StudentViewSet(viewsets.ModelViewSet):
@@ -31,6 +37,22 @@ class DateAttendanceBySemAndAY(generics.ListAPIView):
         ay = SY.objects.get(id = ay_id)
         return EventDate.objects.filter( sy = ay, semester=sem_id)
 
+@api_view(['GET', 'POST'])
+def login_view(request):
+    if request.method == 'POST':  
+        user_credentials = request.data
+        username=user_credentials['username']
+        password=user_credentials['password']
+        try:
+            user=authenticate(username=username,password=password)
+            login(request,user)
+            return Response({"usename": username,"is_admin":True, "is_auth":True})
+        except:
+            return Response({"usename": username,"is_admin": False, "is_auth":False})
+    return Response({"message": "Hello, world!"})
+
+	
+
 
 class DateAttendanceByStudentSemAndAY(generics.ListAPIView):
     serializer_class = AttendanceWithEventDateSerializer
@@ -46,15 +68,14 @@ class DateAttendanceByStudentSemAndAY(generics.ListAPIView):
 
 
 
+
+
 class DateAttendanceByCourseSemAndAY(generics.ListAPIView):
     serializer_class = AttendanceWithEventDateSerializer
     def get_queryset(self):
         ay_id = self.kwargs['ay_id']
         sem_id = self.kwargs['sem_id']
         course = Course.objects.get(id = self.kwargs['course_id'])
-
-        print(ay_id)
-        print(sem_id)
         ay = SY.objects.get(id = ay_id)
         return Attendance.objects.filter(eventDate__sy = ay, eventDate__semester=sem_id, student__course = course)
 
