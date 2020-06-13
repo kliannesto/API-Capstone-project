@@ -79,9 +79,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'ssg_records',
-            'USER':'yamamz',
-            'PASSWORD': 'yamamz',
-            'HOST': '192.168.254.107',
+            'USER':'root',
+            'PASSWORD': '',
+            'HOST': 'localhost',
             'PORT': 3306,
     }
 }
