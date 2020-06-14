@@ -81,7 +81,7 @@ DATABASES = {
         'NAME':'ssg_records',
             'USER':'yamamz',
             'PASSWORD': 'yamamz',
-            'HOST': '192.168.254.107',
+            'HOST': '192.168.254.109',
             'PORT': 3306,
     }
 }

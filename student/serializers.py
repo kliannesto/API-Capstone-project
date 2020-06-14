@@ -53,21 +53,23 @@ class AttendanceSerializer(serializers.ModelSerializer):
 
         except Attendance.DoesNotExist:
             attendance = Attendance.objects.create(**validated_data)
-            return attendance
-
-class AttendanceWithEventDateSerializer(serializers.ModelSerializer):
-    eventDate =   EventDateWithObjectSerializer() 
-    student = StudentSerializer()
-    class Meta:
-        model = Attendance
-        fields = '__all__'
-
+            return attendance       
 
 class ReadStudentSerializer(serializers.ModelSerializer):
     course=CourseSerializer()
     class Meta:
         model = Student
         fields = '__all__'
+
+class AttendanceWithEventDateSerializer(serializers.ModelSerializer):
+    eventDate =   EventDateWithObjectSerializer() 
+    student = ReadStudentSerializer()
+    class Meta:
+        model = Attendance
+        fields = '__all__'
+
+
+
 
 class SMSLogsSerializer(serializers.ModelSerializer):   
     class Meta:

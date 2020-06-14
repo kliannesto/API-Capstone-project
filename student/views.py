@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets,generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from datetime import datetime;
+from datetime import datetime
 from .models import Student,Course,EventName,SY,Semester,EventDate,Attendance,SMSLogs
 from .serializers import StudentSerializer,CourseSerializer,SMSLogsSerializer,AttendanceScheduleSerializer,AttendanceWithEventDateSerializer,EventNameSerializer,SYSerializer,EventDateWithObjectSerializer,EventDateSerializer,SemesterSerializer,AttendanceSerializer,ReadStudentSerializer
 from django.contrib.auth import (
@@ -65,6 +65,15 @@ class DateAttendanceByStudentSemAndAY(generics.ListAPIView):
         print(sem_id)
         ay = SY.objects.get(id = ay_id)
         return Attendance.objects.filter(eventDate__sy = ay, eventDate__semester=sem_id, student = student)
+
+
+class DateAttendanceBySemAndAY(generics.ListAPIView):
+    serializer_class = AttendanceWithEventDateSerializer
+    def get_queryset(self):
+        ay_id = self.kwargs['ay_id']
+        sem_id = self.kwargs['sem_id']
+        ay = SY.objects.get(id = ay_id)
+        return Attendance.objects.filter(eventDate__sy = ay, eventDate__semester=sem_id)
 
 
 

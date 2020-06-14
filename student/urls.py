@@ -28,6 +28,8 @@ urlpatterns = [
     path('api/dateattendance/sem/<sem_id>/ay/<ay_id>',views.DateAttendanceBySemAndAY.as_view()),
     path('api/dateattendance/sem/<sem_id>/ay/<ay_id>/stud/<st_id>',views.DateAttendanceByStudentSemAndAY.as_view()),
     path('api/dateattendance/sem/<sem_id>/ay/<ay_id>/course/<course_id>',views.DateAttendanceByCourseSemAndAY.as_view()),
+    path('api/dateattendance/sem/<sem_id>/ay/<ay_id>',views.DateAttendanceBySemAndAY.as_view()),
+    
 
     
 ]
